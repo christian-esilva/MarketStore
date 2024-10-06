@@ -1,6 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using NerdStore.Catalogo.Application.Services;
 using NerdStore.Catalogo.Data;
 using NerdStore.Catalogo.Data.Repository;
@@ -31,11 +32,12 @@ namespace NerdStore.WebApp.Mvc
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-            builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
-            builder.Services.AddDbContext<CatalogoContext>(options => options.UseSqlServer(connectionString));
-            builder.Services.AddDbContext<VendasContext>(options => options.UseSqlServer(connectionString));
-            builder.Services.AddDbContext<PagamentoContext>(options => options.UseSqlServer(connectionString));
+            var mySqlConnection = builder.Configuration.GetConnectionString("DefaultConnection");
+
+            builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseMySql(mySqlConnection, ServerVersion.AutoDetect(mySqlConnection)));
+            builder.Services.AddDbContext<CatalogoContext>(options => options.UseMySql(mySqlConnection, ServerVersion.AutoDetect(mySqlConnection)));
+            builder.Services.AddDbContext<VendasContext>(options => options.UseMySql(mySqlConnection, ServerVersion.AutoDetect(mySqlConnection)));
+            builder.Services.AddDbContext<PagamentoContext>(options => options.UseMySql(mySqlConnection, ServerVersion.AutoDetect(mySqlConnection)));
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
             builder.Services.AddDefaultIdentity<IdentityUser>(options =>

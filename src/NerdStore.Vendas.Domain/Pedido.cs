@@ -5,7 +5,7 @@ namespace NerdStore.Vendas.Domain
 {
     public class Pedido : Entity, IAggregateRoot
     {
-        public int Codigo { get; private set; }
+        public int Codigo { get; set; }
         public Guid ClienteId { get; private set; }
         public Guid? VoucherId { get; private set; }
         public bool VoucherUtilizado { get; private set; }

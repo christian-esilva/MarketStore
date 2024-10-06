@@ -49,9 +49,23 @@ namespace NerdStore.Vendas.Data
                 }
             }
 
+            foreach (var entry in ChangeTracker.Entries<Pedido>())
+            {
+                if (entry.State == EntityState.Added)
+                {
+                    entry.Entity.Codigo = GetNextCustomId();
+                }
+            }
+
             var sucesso = await base.SaveChangesAsync() > 0;
             if (sucesso) await _mediatrHandler.PublicarEventos(this);
             return sucesso;
+        }
+
+        private int GetNextCustomId()
+        {
+            // Obtenha o maior CustomId existente no banco de dados e incremente
+            return Pedidos.Any() ? Pedidos.Max(p => p.Codigo) + 1 : 1;
         }
     }
 }
