@@ -32,6 +32,8 @@ namespace NerdStore.WebApp.Mvc.Controllers.Admin
         {
             if (!ModelState.IsValid) return View(await PopularCategorias(produtoViewModel));
 
+            if (produtoViewModel.ImagemUpload is null) return View(produtoViewModel);
+
             var imgPrefixo = $"{Guid.NewGuid()}_";
             if (!await UploadArquivo(produtoViewModel.ImagemUpload, imgPrefixo))
             {
@@ -55,8 +57,8 @@ namespace NerdStore.WebApp.Mvc.Controllers.Admin
         [Route("editar-produto")]
         public async Task<IActionResult> AtualizarProduto(Guid id, ProdutoViewModel produtoViewModel)
         {
-            var produto = await _produtoAppService.ObterPorId(id);
-            produtoViewModel.QuantidadeEstoque = produto.QuantidadeEstoque;
+            var produto = await _produtoAppService.ObterPorId(id);           
+            produtoViewModel.Imagem = produto.Imagem;
 
             if (produtoViewModel.ImagemUpload != null)
             {
@@ -67,8 +69,9 @@ namespace NerdStore.WebApp.Mvc.Controllers.Admin
                 produtoViewModel.Imagem = imgPrefixo + produtoViewModel.ImagemUpload.FileName;
             }
 
-            ModelState.Remove("QuantidadeEstoque");
             if (!ModelState.IsValid) return View(await PopularCategorias(produtoViewModel));
+
+            produtoViewModel.QuantidadeEstoque = produto.QuantidadeEstoque;
 
             await _produtoAppService.AtualizarProduto(produtoViewModel);
 
@@ -87,13 +90,9 @@ namespace NerdStore.WebApp.Mvc.Controllers.Admin
         public async Task<IActionResult> AtualizarEstoque(Guid id, int quantidade)
         {
             if (quantidade > 0)
-            {
                 await _produtoAppService.ReporEstoque(id, quantidade);
-            }
             else
-            {
                 await _produtoAppService.DebitarEstoque(id, quantidade);
-            }
 
             return View("Index", await _produtoAppService.ObterTodos());
         }
@@ -116,10 +115,8 @@ namespace NerdStore.WebApp.Mvc.Controllers.Admin
                 return false;
             }
 
-            using (var stream = new FileStream(path, FileMode.Create))
-            {
-                await arquivo.CopyToAsync(stream);
-            }
+            using var stream = new FileStream(path, FileMode.Create);
+            await arquivo.CopyToAsync(stream);
 
             return true;
         }

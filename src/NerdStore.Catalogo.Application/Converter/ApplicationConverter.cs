@@ -25,6 +25,7 @@ namespace NerdStore.Catalogo.Application.Converter
                 Categorias = [ToCategoriaViewModel(produto.Categoria)],
             };
         }
+
         public static IEnumerable<ProdutoViewModel> ToProdutoViewModel(this IEnumerable<Produto> produtos)
         {
             var produtosViewModel = new List<ProdutoViewModel>();
@@ -35,9 +36,10 @@ namespace NerdStore.Catalogo.Application.Converter
 
             return produtosViewModel;
         }
+
         public static CategoriaViewModel ToCategoriaViewModel(this Categoria categoria)
         {
-            if (ReferenceEquals(categoria, null)) return null!;
+            if (categoria is null) return null!;
             else
                 return new CategoriaViewModel
                 {
@@ -46,6 +48,7 @@ namespace NerdStore.Catalogo.Application.Converter
                     Nome = categoria.Nome,
                 };
         }
+
         public static IEnumerable<CategoriaViewModel> ToCategoriaViewModel(this IEnumerable<Categoria> categorias)
         {
             var categoriasViewModel = new List<CategoriaViewModel>();
@@ -56,6 +59,7 @@ namespace NerdStore.Catalogo.Application.Converter
 
             return categoriasViewModel;
         }
+
         public static Produto ToProduto(ProdutoViewModel model)
         {
             return new Produto(model.Nome, model.Descricao, model.Ativo, model.Valor, model.CategoriaId, model.DataCadastro, model.Imagem, new Dimensoes(model.Altura, model.Largura, model.Profundidade));

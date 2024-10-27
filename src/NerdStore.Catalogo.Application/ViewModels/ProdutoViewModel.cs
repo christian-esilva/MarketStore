@@ -26,12 +26,11 @@ namespace NerdStore.Catalogo.Application.ViewModels
 
         [Required(ErrorMessage = "O campo {0} é obrigatório")]
         public DateTime DataCadastro { get; set; }
-        
+
         public string? Imagem { get; set; }
 
         [DisplayName("Imagem")]
-        [Required(ErrorMessage = "O campo {0} é obrigatório")]
-        public IFormFile ImagemUpload { get; set; }
+        public IFormFile? ImagemUpload { get; set; }
 
         [Range(1, int.MaxValue, ErrorMessage = "O campo {0} precisa ter o valor mínimo de {1}")]
         [Required(ErrorMessage = "O campo {0} é obrigatório")]
