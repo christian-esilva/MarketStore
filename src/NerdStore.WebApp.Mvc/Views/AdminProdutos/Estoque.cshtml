@@ -20,7 +20,11 @@
             <div class="section" style="padding-bottom:20px;">
                 <form method="post" asp-controller="AdminProdutos" asp-action="AtualizarEstoque">
                     <input type="hidden" id="Id" name="Id" value="@Model.Id" />
-                    <input type="text" id="quantidade" name="quantidade" />
+
+                    <div class="form-group">
+                        <input type="text" id="quantidade" name="quantidade" class="form-control" />
+                    </div>
+
                     <button class="btn btn-info">Atualizar Estoque</button>
                 </form>
             </div>

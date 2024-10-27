@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -34,6 +38,10 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="AdminProdutos" asp-action="Index">Admin</a>
                         </li>
                     </ul>
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+
+                    }
                 </div>
             </div>
         </nav>
@@ -47,7 +55,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2019 - NerdStore.WebApp.MVC - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; @DateTime.Today.Year - Senac - NerdStore - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacidade</a>
         </div>
     </footer>
 

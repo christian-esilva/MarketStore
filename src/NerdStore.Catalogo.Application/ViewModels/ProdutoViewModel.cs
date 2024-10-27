@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace NerdStore.Catalogo.Application.ViewModels
 {
@@ -24,9 +26,12 @@ namespace NerdStore.Catalogo.Application.ViewModels
 
         [Required(ErrorMessage = "O campo {0} é obrigatório")]
         public DateTime DataCadastro { get; set; }
+        
+        public string? Imagem { get; set; }
 
+        [DisplayName("Imagem")]
         [Required(ErrorMessage = "O campo {0} é obrigatório")]
-        public string Imagem { get; set; }
+        public IFormFile ImagemUpload { get; set; }
 
         [Range(1, int.MaxValue, ErrorMessage = "O campo {0} precisa ter o valor mínimo de {1}")]
         [Required(ErrorMessage = "O campo {0} é obrigatório")]
@@ -44,6 +49,6 @@ namespace NerdStore.Catalogo.Application.ViewModels
         [Required(ErrorMessage = "O campo {0} é obrigatório")]
         public int Profundidade { get; set; }
 
-        public IEnumerable<CategoriaViewModel> Categorias { get; set; }
+        public IEnumerable<CategoriaViewModel>? Categorias { get; set; }
     }
 }

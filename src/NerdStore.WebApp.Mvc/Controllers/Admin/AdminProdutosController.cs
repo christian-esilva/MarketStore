@@ -32,6 +32,13 @@ namespace NerdStore.WebApp.Mvc.Controllers.Admin
         {
             if (!ModelState.IsValid) return View(await PopularCategorias(produtoViewModel));
 
+            var imgPrefixo = $"{Guid.NewGuid()}_";
+            if (!await UploadArquivo(produtoViewModel.ImagemUpload, imgPrefixo))
+            {
+                return View(produtoViewModel);
+            }
+            produtoViewModel.Imagem = imgPrefixo + produtoViewModel.ImagemUpload.FileName;
+
             await _produtoAppService.AdicionarProduto(produtoViewModel);
 
             return RedirectToAction("Index");
@@ -50,6 +57,15 @@ namespace NerdStore.WebApp.Mvc.Controllers.Admin
         {
             var produto = await _produtoAppService.ObterPorId(id);
             produtoViewModel.QuantidadeEstoque = produto.QuantidadeEstoque;
+
+            if (produtoViewModel.ImagemUpload != null)
+            {
+                var imgPrefixo = $"{Guid.NewGuid()}_";
+                if (!await UploadArquivo(produtoViewModel.ImagemUpload, imgPrefixo))
+                    return View(produtoViewModel);
+
+                produtoViewModel.Imagem = imgPrefixo + produtoViewModel.ImagemUpload.FileName;
+            }
 
             ModelState.Remove("QuantidadeEstoque");
             if (!ModelState.IsValid) return View(await PopularCategorias(produtoViewModel));
@@ -86,6 +102,26 @@ namespace NerdStore.WebApp.Mvc.Controllers.Admin
         {
             produto.Categorias = await _produtoAppService.ObterCategorias();
             return produto;
+        }
+
+        private async Task<bool> UploadArquivo(IFormFile arquivo, string imgPrefixo)
+        {
+            if (arquivo.Length <= 0) return false;
+
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Images", imgPrefixo + arquivo.FileName);
+
+            if (System.IO.File.Exists(path))
+            {
+                ModelState.AddModelError(string.Empty, "Já existe um arquivo com esse nome");
+                return false;
+            }
+
+            using (var stream = new FileStream(path, FileMode.Create))
+            {
+                await arquivo.CopyToAsync(stream);
+            }
+
+            return true;
         }
     }
 }
