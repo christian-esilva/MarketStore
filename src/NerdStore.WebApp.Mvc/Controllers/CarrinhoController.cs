@@ -112,9 +112,11 @@ namespace NerdStore.WebApp.Mvc.Controllers
         [HttpPost("iniciar-pedido")]
         public async Task<IActionResult> IniciarPedido(CarrinhoViewModel carrinhoViewModel)
         {
+            ArgumentNullException.ThrowIfNull(carrinhoViewModel);
+
             var carrinho = await _pedidoQueries.ObterCarrinhoCliente(ClienteId);
 
-            var command = new IniciarPedidoCommand(carrinho.PedidoId, ClienteId, carrinho.ValorTotal, carrinho.TipoPagamento.ToString());
+            var command = new IniciarPedidoCommand(carrinho.PedidoId, ClienteId, carrinho.ValorTotal, carrinhoViewModel.TipoPagamento.ToString());
 
             await _mediatrHandler.EnviarComando(command);
 
