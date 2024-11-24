@@ -29,10 +29,7 @@ namespace NerdStore.Vendas.Domain
             _pedidoItems = new List<PedidoItem>();
         }
 
-        protected Pedido()
-        {
-            _pedidoItems = new List<PedidoItem>();
-        }
+        protected Pedido() => _pedidoItems = [];
 
         public ValidationResult AplicarVoucher(Voucher voucher)
         {

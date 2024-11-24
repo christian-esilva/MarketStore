@@ -17,7 +17,9 @@ namespace NerdStore.Vendas.Data.Repository
 
         public async Task<Pedido> ObterPorId(Guid id)
         {
-            return await _context.Pedidos.FindAsync(id);
+            return await _context.Pedidos
+                .Include(x => x.PedidoItems)
+                .Where(x => x.Id == id).FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<Pedido>> ObterListaPorClienteId(Guid clienteId)

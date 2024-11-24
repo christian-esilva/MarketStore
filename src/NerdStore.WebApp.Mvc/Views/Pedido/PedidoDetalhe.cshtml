@@ -1,0 +1,74 @@
+﻿@model NerdStore.Vendas.Application.Queries.ViewModels.PedidoDetalheViewModel
+
+@{
+    ViewData["Title"] = "Detalhes do Pedido";
+}
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Detalhes do Pedido</h1>
+
+    <!-- Informações do Pedido -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5>Informações do Pedido</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Código do Pedido:</strong> @Model.Codigo</p>
+                    <p><strong>Cliente ID:</strong> @Model.ClienteId</p>
+                    <p><strong>Data de Cadastro:</strong> @Model.DataCadastro.ToString("dd/MM/yyyy")</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Valor Total:</strong> @Model.ValorTotal.ToString("C")</p>
+                    <p><strong>Desconto:</strong> @Model.Desconto.ToString("C")</p>
+                    <p><strong>Status:</strong> @Model.PedidoStatus</p>
+                    <p><strong>Tipo de Pagamento:</strong> @Model.TipoPagamento</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Itens do Pedido -->
+    <div class="card">
+        <div class="card-header bg-secondary text-white">
+            <h5>Itens do Pedido</h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nome do Produto</th>
+                        <th>Quantidade</th>
+                        <th>Valor Unitário</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.ItensPedido != null && Model.ItensPedido.Any())
+                    {
+                        int index = 1;
+                        foreach (var item in Model.ItensPedido)
+                        {
+                            <tr>
+                                <td>@index</td>
+                                <td>@item.ProdutoNome</td>
+                                <td>@item.Quantidade</td>
+                                <td>@item.ValorUnitario.ToString("C")</td>
+                                <td>@(item.Quantidade * item.ValorUnitario).ToString("C")</td>
+                            </tr>
+                            index++;
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="5" class="text-center">Nenhum item encontrado.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

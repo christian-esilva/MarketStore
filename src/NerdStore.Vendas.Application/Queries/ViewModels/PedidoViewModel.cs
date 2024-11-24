@@ -9,6 +9,7 @@ namespace NerdStore.Vendas.Application.Queries.ViewModels
         public decimal ValorTotal { get; set; }
         public DateTime DataCadastro { get; set; }
         public int PedidoStatus { get; set; }
+        public string StatusDescricao { get; set; }
         public string TipoPagamento { get; set; }
     }
 }

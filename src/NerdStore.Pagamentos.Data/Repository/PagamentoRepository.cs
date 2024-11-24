@@ -1,33 +1,32 @@
-﻿using NerdStore.Core.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using NerdStore.Core.Data;
 using NerdStore.Pagamentos.Business;
 
 namespace NerdStore.Pagamentos.Data.Repository
 {
-    public class PagamentoRepository : IPagamentoRepository
+    public class PagamentoRepository(PagamentoContext context) : IPagamentoRepository
     {
-        private readonly PagamentoContext _context;
-
-        public PagamentoRepository(PagamentoContext context)
-        {
-            _context = context;
-        }
-
-        public IUnitOfWork UnitOfWork => _context;
+        public IUnitOfWork UnitOfWork => context;
 
 
         public void Adicionar(Pagamento pagamento)
         {
-            _context.Pagamentos.Add(pagamento);
+            context.Pagamentos.Add(pagamento);
         }
 
         public void AdicionarTransacao(Transacao transacao)
         {
-            _context.Transacoes.Add(transacao);
+            context.Transacoes.Add(transacao);
         }
 
         public void Dispose()
         {
-            _context.Dispose();
+            context.Dispose();
+        }
+
+        public async Task<Pagamento> ObterPorIdPedido(Guid idPedido)
+        {
+            return await context.Pagamentos.FirstOrDefaultAsync(x => x.PedidoId == idPedido);
         }
     }
 }

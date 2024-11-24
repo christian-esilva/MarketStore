@@ -7,6 +7,7 @@ namespace NerdStore.Vendas.Application.Queries
     {
         Task<CarrinhoViewModel> ObterCarrinhoCliente(Guid clienteId);
         Task<IEnumerable<PedidoViewModel>> ObterPedidosCliente(Guid clienteId);
+        Task<PedidoDetalheViewModel> ObterPedidoDetalhe(Guid pedidoId);
     }
 
     public class PedidoQueries : IPedidoQueries
@@ -21,7 +22,7 @@ namespace NerdStore.Vendas.Application.Queries
         public async Task<CarrinhoViewModel> ObterCarrinhoCliente(Guid clienteId)
         {
             var pedido = await _pedidoRepository.ObterPedidoRascunhoPorClienteId(clienteId);
-            if (pedido == null) return null;
+            if (pedido is null) return null;
             var carrinho = new CarrinhoViewModel()
             {
                 ClienteId = pedido.ClienteId,
@@ -50,6 +51,33 @@ namespace NerdStore.Vendas.Application.Queries
             return carrinho;
         }
 
+        public async Task<PedidoDetalheViewModel> ObterPedidoDetalhe(Guid pedidoId)
+        {
+            var pedido = await _pedidoRepository.ObterPorId(pedidoId);
+
+            if (pedido is null) return null;
+
+            return new PedidoDetalheViewModel
+            {
+                ClienteId = pedido.ClienteId,
+                Codigo = pedido.Codigo,
+                DataCadastro = pedido.DataCadastro,
+                Desconto = pedido.Desconto,
+                ItensPedido = pedido.PedidoItems.Select(item => new ItemPedidoViewModel
+                {
+                    PedidoId = pedido.Id,
+                    ProdutoId = item.ProdutoId,
+                    ProdutoNome = item.ProdutoNome,
+                    Quantidade = item.Quantidade,
+                    ValorUnitario = item.ValorUnitario
+                }).ToList(),
+                PedidoStatus = pedido.PedidoStatus,
+                ValorTotal = pedido.ValorTotal,
+                VoucherId = pedido.VoucherId,
+                VoucherUtilizado = pedido.VoucherUtilizado,
+            };
+        }
+
         public async Task<IEnumerable<PedidoViewModel>> ObterPedidosCliente(Guid clienteId)
         {
             var pedidos = await _pedidoRepository.ObterListaPorClienteId(clienteId);
@@ -69,7 +97,8 @@ namespace NerdStore.Vendas.Application.Queries
                     ValorTotal = pedido.ValorTotal,
                     PedidoStatus = (int)pedido.PedidoStatus,
                     Codigo = pedido.Codigo,
-                    DataCadastro = pedido.DataCadastro
+                    DataCadastro = pedido.DataCadastro,
+                    StatusDescricao = pedido.PedidoStatus.ToString(),
                 });
             }
 

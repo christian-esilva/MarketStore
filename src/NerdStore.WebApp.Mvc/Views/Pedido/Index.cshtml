@@ -23,9 +23,9 @@
                         <td>@pedido.Id</td>
                         <td>@pedido.ValorTotal.ToString("C")</td>
                         <td>@pedido.DataCadastro.ToShortDateString()</td>
-                        <td>@pedido.PedidoStatus</td>
+                        <td>@pedido.StatusDescricao</td>
                         <td>
-                            <a href="#">Detalhes</a> |
+                            <a asp-controller="Pedido" asp-action="PedidoDetalhe" asp-route-id="@pedido.Id" class="btn btn-link">Ver detalhes</a>
                         </td>
                     </tr>
                 }

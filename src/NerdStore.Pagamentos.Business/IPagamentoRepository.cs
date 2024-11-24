@@ -7,5 +7,7 @@ namespace NerdStore.Pagamentos.Business
         void Adicionar(Pagamento pagamento);
 
         void AdicionarTransacao(Transacao transacao);
+
+        Task<Pagamento> ObterPorIdPedido(Guid idPedido);
     }
 }
