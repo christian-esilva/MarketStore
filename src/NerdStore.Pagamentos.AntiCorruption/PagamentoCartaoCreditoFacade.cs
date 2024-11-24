@@ -2,26 +2,16 @@
 
 namespace NerdStore.Pagamentos.AntiCorruption
 {
-    public class PagamentoCartaoCreditoFacade : IPagamentoCartaoCreditoFacade
+    public class PagamentoCartaoCreditoFacade(IPayPalGateway payPalGateway, IConfigurationManagerr configManager) : IPagamentoCartaoCreditoFacade
     {
-        private readonly IPayPalGateway _payPalGateway;
-        private readonly IConfigurationManagerr _configManager;
-
-        public PagamentoCartaoCreditoFacade(IPayPalGateway payPalGateway, IConfigurationManagerr configManager)
-        {
-            _payPalGateway = payPalGateway;
-            _configManager = configManager;
-        }
-
         public Transacao RealizarPagamento(Pedido pedido, Pagamento pagamento)
         {
-            var apiKey = _configManager.GetValue("apiKey");
-            var encriptionKey = _configManager.GetValue("encriptionKey");
+            var apiKey = configManager.GetValue("apiKey");
+            var encriptionKey = configManager.GetValue("encriptionKey");
 
-            var serviceKey = _payPalGateway.GetPayPalServiceKey(apiKey, encriptionKey);
-            var cardHashKey = _payPalGateway.GetCardHashKey(serviceKey, pagamento.NumeroCartao);
+            var serviceKey = payPalGateway.GetPayPalServiceKey(apiKey, encriptionKey);
 
-            var pagamentoResult = _payPalGateway.CommitTransaction(cardHashKey, pedido.Id.ToString(), pagamento.Valor);
+            var pagamentoResult = payPalGateway.CommitTransaction(pedido.Id.ToString(), pagamento.Valor);
 
             // TODO: O gateway de pagamentos que deve retornar o objeto transação
             var transacao = new Transacao

@@ -20,10 +20,7 @@ namespace NerdStore.Pagamentos.Business.Events
                 PedidoId = message.PedidoId,
                 ClienteId = message.ClienteId,
                 Total = message.Total,
-                NomeCartao = message.NomeCartao,
-                NumeroCartao = message.NumeroCartao,
-                ExpiracaoCartao = message.ExpiracaoCartao,
-                CvvCartao = message.CvvCartao
+                TipoPagamento = message.TipoPagamento,
             };
 
             await _pagamentoService.RealizarPagamentoPedido(pagamentoPedido);

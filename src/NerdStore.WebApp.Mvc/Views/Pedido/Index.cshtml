@@ -1,0 +1,36 @@
+﻿@model IEnumerable<NerdStore.Vendas.Application.Queries.ViewModels.PedidoViewModel>
+@{
+    ViewData["Title"] = "Pedido";
+}
+
+<div class="container">
+    <h1>Meus pedidos</h1>
+    <div class="row">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Código</th>
+                    <th>Valor Total</th>
+                    <th>Data de Cadastro</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var pedido in Model.OrderByDescending(x => x.DataCadastro))
+                {
+                    <tr>
+                        <td>@pedido.Id</td>
+                        <td>@pedido.ValorTotal.ToString("C")</td>
+                        <td>@pedido.DataCadastro.ToShortDateString()</td>
+                        <td>@pedido.PedidoStatus</td>
+                        <td>
+                            <a href="#">Detalhes</a> |
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

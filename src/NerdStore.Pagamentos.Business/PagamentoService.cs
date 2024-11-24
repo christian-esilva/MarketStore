@@ -31,10 +31,7 @@ namespace NerdStore.Pagamentos.Business
             var pagamento = new Pagamento
             {
                 Valor = pagamentoPedido.Total,
-                NomeCartao = pagamentoPedido.NomeCartao,
-                NumeroCartao = pagamentoPedido.NumeroCartao,
-                ExpiracaoCartao = pagamentoPedido.ExpiracaoCartao,
-                CvvCartao = pagamentoPedido.CvvCartao,
+                TipoPagamento = pagamentoPedido.TipoPagamento,
                 PedidoId = pagamentoPedido.PedidoId
             };
 

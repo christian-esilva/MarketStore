@@ -1,4 +1,5 @@
-﻿@model NerdStore.Vendas.Application.Queries.ViewModels.CarrinhoViewModel
+﻿@using NerdStore.Vendas.Application.Queries.ViewModels
+@model NerdStore.Vendas.Application.Queries.ViewModels.CarrinhoViewModel
 @{
     ViewData["Title"] = "Index";
 }
@@ -62,23 +63,11 @@
                         <br /><br />
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label>Nome no Cartão</label>
-                                <input asp-for="Pagamento.NomeCartao" type="text" class="form-control" placeholder="" required="">
-                                <small class="text-muted">Nome completo como consta no cartão</small>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label>Número do Cartão</label>
-                                <input asp-for="Pagamento.NumeroCartao" type="text" class="form-control" placeholder="" required="">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-3 mb-3">
-                                <label>Data Expiração</label>
-                                <input asp-for="Pagamento.ExpiracaoCartao" type="text" class="form-control" placeholder="" required="">
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <label>CVV</label>
-                                <input asp-for="Pagamento.CvvCartao" type="text" class="form-control" placeholder="" required="">
+                                <label for="TipoPagamento">Forma de Pagamento</label>
+                                <select asp-for="TipoPagamento" asp-items="Html.GetEnumSelectList<CarrinhoTipoPagamentoViewModel>()" class="form-control" required>
+                                    <option value="" disabled selected>Selecione uma opção</option>
+                                </select>
+                                <small class="text-muted">Selecione a forma de pagamento</small>
                             </div>
                         </div>
                         <hr class="mb-4">

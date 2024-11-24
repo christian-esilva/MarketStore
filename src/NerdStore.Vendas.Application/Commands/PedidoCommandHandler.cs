@@ -169,7 +169,7 @@ namespace NerdStore.Vendas.Application.Commands
             pedido.PedidoItems.ForEach(item => itensList.Add(new Item { Id = item.ProdutoId, Quantidade = item.Quantidade }));
             var listaProdutosPedido = new ListaProdutosPedido { PedidoId = pedido.Id, Itens = itensList };
 
-            pedido.AdicionarEvento(new PedidoIniciadoEvent(pedido.Id, pedido.ClienteId, listaProdutosPedido, pedido.ValorTotal, message.NomeCartao, message.NumeroCartao, message.ExpiracaoCartao, message.CvvCartao));
+            pedido.AdicionarEvento(new PedidoIniciadoEvent(pedido.Id, pedido.ClienteId, listaProdutosPedido, pedido.ValorTotal, message.TipoPagamento));
 
             _pedidoRepository.Atualizar(pedido);
             return await _pedidoRepository.UnitOfWork.Commit();
