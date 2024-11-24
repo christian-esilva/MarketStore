@@ -1,4 +1,5 @@
-﻿@model NerdStore.Vendas.Application.Queries.ViewModels.PedidoDetalheViewModel
+﻿@using System.Globalization
+@model NerdStore.Vendas.Application.Queries.ViewModels.PedidoDetalheViewModel
 
 @{
     ViewData["Title"] = "Detalhes do Pedido";
@@ -42,6 +43,7 @@
                         <th>Nome do Produto</th>
                         <th>Quantidade</th>
                         <th>Valor Unitário</th>
+                        <th>Subtotal</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -55,6 +57,7 @@
                                 <td>@item.ProdutoNome</td>
                                 <td>@item.Quantidade</td>
                                 <td>@item.ValorUnitario.ToString("C")</td>
+                                <td>@((item.Quantidade * item.ValorUnitario).ToString("C2", new CultureInfo("pt-BR")))</td>
                             </tr>
                             index++;
                         }
